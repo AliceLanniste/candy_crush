@@ -4,7 +4,7 @@ import './App.css'
 import { useAppDispatch, useAppSelector } from './store/hooks'
 import { createBoard } from './utils/createBoard'
 import Board from './components/Board'
-import { updateBoard } from './store'
+import { moveBelow, updateBoard } from './store'
 import { checkForColumnOfThree, checkForRowOfFour, checkForRowOfThree, isColumnOfFour } from './utils/moveLogic'
 import { formulaForColumnOfFour, formulaForColumnOfThree, generateInvalidMoves } from './utils/formulas'
 
@@ -33,6 +33,7 @@ function App() {
         );
         checkForRowOfThree(newBoard, boardSize, generateInvalidMoves(boardSize));
         dispatch(updateBoard(newBoard));
+        dispatch(moveBelow())
       }, 150);
       return () => clearInterval(timeout);
     }, [board, dispatch, boardSize]);

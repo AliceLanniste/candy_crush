@@ -1,12 +1,17 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit"
+import { moveBelowReducer } from "./reducers/moveBelow"
 
 
 const initialState :{
     board:string[],
-    boardSize:number
+    boardSize:number,
+    squareBeingReplaced: Element | undefined;
+    squareBeingDragged: Element | undefined;
 } = {
     board:[],
-    boardSize:8
+    boardSize:8,
+    squareBeingReplaced: undefined,
+    squareBeingDragged:  undefined
 }
 
 
@@ -17,7 +22,8 @@ const candyCrushSlice = createSlice({
     reducers:{
         updateBoard:(state,action: PayloadAction<string[]>) =>{
             state.board = action.payload
-        }
+        },
+        moveBelow:moveBelowReducer
     }
 })
 
@@ -28,7 +34,7 @@ export const store = configureStore({
     }
 })
 
-export const { updateBoard } =
+export const { updateBoard,moveBelow } =
   candyCrushSlice.actions;
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
