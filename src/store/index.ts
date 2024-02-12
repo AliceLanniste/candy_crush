@@ -1,5 +1,6 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit"
 import { moveBelowReducer } from "./reducers/moveBelow"
+import { dragEndReducer } from "./reducers/DragEnd";
 
 
 const initialState :{
@@ -23,6 +24,13 @@ const candyCrushSlice = createSlice({
         updateBoard:(state,action: PayloadAction<string[]>) =>{
             state.board = action.payload
         },
+        dragStart: (state, action: PayloadAction<any>) => {
+            state.squareBeingDragged = action.payload;
+          },
+          dragDrop: (state, action: PayloadAction<any>) => {
+            state.squareBeingReplaced = action.payload;
+          },
+          dragEnd: dragEndReducer,
         moveBelow:moveBelowReducer
     }
 })
@@ -31,10 +39,14 @@ const candyCrushSlice = createSlice({
 export const store = configureStore({
     reducer:{
         candyCrush: candyCrushSlice.reducer
-    }
+    },
+    middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 })
 
-export const { updateBoard,moveBelow } =
+export const { updateBoard,moveBelow,dragDrop,dragEnd,dragStart } =
   candyCrushSlice.actions;
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
